@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useClipVideo } from "../hooks/useClipVideo";
 
-export const ClipForm = ({ onSuccess }: { onSuccess: (url: string) => void }) => {
+export const ClipForm = ({ onSuccess }: { onSuccess: (url: string | null) => void }) => {
   const [tweetUrl, setTweetUrl] = useState("")
   const [start, setStart] = useState("")
   const [end, setEnd] = useState("")
@@ -11,6 +11,7 @@ export const ClipForm = ({ onSuccess }: { onSuccess: (url: string) => void }) =>
   const { mutate, isPending, error } = useClipVideo()
 
   const submit = () => {
+    onSuccess(null)
     mutate(
       { tweetUrl, start, end },
       { onSuccess: data => onSuccess(data.downloadUrl) }
@@ -29,13 +30,13 @@ export const ClipForm = ({ onSuccess }: { onSuccess: (url: string) => void }) =>
       <div className="flex gap-2">
         <input
           className="w-full p-2 rounded bg-gray-800"
-          placeholder="Start (00:10)"
+          placeholder="Start (00:00:10)"
           value={start}
           onChange={e => setStart(e.target.value)}
         />
         <input
           className="w-full p-2 rounded bg-gray-800"
-          placeholder="End (00:20)"
+          placeholder="End (00:00:20)"
           value={end}
           onChange={e => setEnd(e.target.value)}
         />
